@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>CSS3 Transitions Sample</title>
+	<style>
+		body {
+			background: #000;
+		}
+
+		#transitionView {
+			width: 600px;
+			margin: 100px auto 0;
+			perspective: 1000;
+			-webkit-perspective: 1000;
+			-moz-perspective: 1000px;
+		}
+
+		/* CUBE */
+		#effect {
+			position: absolute;
+			width: 600px;
+			height: 400px;
+			transform-style: preserve-3d;
+			transform: translateZ(-200px) rotateX(0deg);
+			transition: all 0.5s ease-in-out;
+			-webkit-transform-style: preserve-3d;
+			-webkit-transform: translateZ(-200px) rotateX(0deg);
+			-webkit-transition: all 0.5s ease-in-out;
+		}
+
+		body:active #effect {
+			transform: translateZ(-200px)  rotateX(-90deg);
+			transition: all 0.5s ease-in-out;
+			-webkit-transform: translateZ(-200px)  rotateX(-90deg);
+			-webkit-transition: all 0.5s ease-in-out;
+		}
+
+		#effect .slideA, #effect .slideB {
+			position: absolute;
+			width: 600px;
+			height: 400px;
+		}
+
+		#effect .slideA {
+			transform: translateZ(200px);
+			-webkit-transform: translateZ(200px);
+		}
+
+		#effect .slideB {
+			transform: translateY(-200px) rotateX(90deg);
+			-webkit-transform: translateY(-200px) rotateX(90deg);
+		}
+	</style>
+</head>
+<body>
+	<div id="transitionView">
+		<div id="effect">
+			<div class="slideA"><img src="imgs/pictureA.jpg"/></div>
+			<div class="slideB"><img src="imgs/pictureB.jpg"/></div>
+		</div>
+	</div>
+</body>
+</html>

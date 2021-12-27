@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample</title>
+	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script>
+		function init() {
+			var canvas = document.getElementById("myCanvas");
+			stage = new Stage(canvas);
+
+			// オブジェクトの作成
+			shape = new Shape();
+			shape.x = 100;
+			shape.y = 100;
+			shape.graphics.beginFill(Graphics.getRGB(255, 0, 0));
+			shape.graphics.drawCircle(0, 0, 100);
+			stage.addChild(shape);
+
+			// マウスオーバーを有効にする
+			stage.enableMouseOver(10);
+
+			shape.onMouseOver = function (event) {
+				shape.graphics.clear()
+						.beginFill(Graphics.getRGB(0, 255, 0))
+						.drawCircle(0, 0, 100);
+			};
+			shape.onMouseOut = function (event) {
+				this.graphics.clear()
+						.beginFill(Graphics.getRGB(255, 0, 0))
+						.drawCircle(0, 0, 100);
+			};
+			shape.onClick = function (event) {
+				alert("クリックされました");
+			};
+
+			Ticker.addListener(stage);
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+</html>

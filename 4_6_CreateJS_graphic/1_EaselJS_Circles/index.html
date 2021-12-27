@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample</title>
+	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script src="easeljs/filters/BoxBlurFilter.js"></script>
+	<script>
+
+		var stage;
+		var count = 0;
+
+		function init() {
+			// canvasの参照を取得します
+			var canvas = document.getElementById("myCanvas");
+
+			// Stageオブジェクトを作成。表示リストのルートになります。
+			stage = new Stage(canvas);
+
+
+			for (var i = 0; i < 150; i++) {
+				createCircle(); // 円を作成
+			}
+
+			stage.update(); // 描画更新
+		}
+
+		function createCircle() {
+			// ぼかしフィルターを作成(ぼかしの適用量はランダム)
+			var blurVal = [2, 4, 8, 16, 32, 64][Math.round(Math.random() * 6)]
+			var blurFilter = new BoxBlurFilter(blurVal, blurVal, 1);
+			var margins = blurFilter.getBounds(); // フィルターの余白を取得
+
+			// 円を作成
+			var shape = new Shape();
+			var size = Math.random() * 120; // サイズ
+			var hue = 180 + 70 * Math.random(); // 色相
+			shape.graphics.beginFill("hsl(" + hue + ", 30%, 50%)"); // 赤色で描画するように設定
+			shape.graphics.drawCircle(0, 0, size); //半径100pxの円を描画
+
+			// 座標
+			shape.x = Math.random() * 980;
+			shape.y = Math.random() * 580;
+			shape.alpha = Math.random();
+			// フィルター
+			shape.filters = [blurFilter];
+			shape.cache(-size + margins.x, -size + margins.y, size * 2 + margins.width, size * 2 + margins.height);
+			// ブレンドモード (設定すると見栄えがいいものの、特定のブラウザでは処理負荷が増大します)
+			shape.compositeOperation = "lighter";
+
+			// 画面に追加
+			stage.addChild(shape); // 表示リストに追加
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<canvas id="myCanvas" width="980" height="580" style="background-color: #000;"></canvas>
+</body>
+</html>

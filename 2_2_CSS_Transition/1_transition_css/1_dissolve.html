@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>CSS3 Transitions Sample</title>
+	<style>
+		body { background: #000; }
+
+		#transitionView {
+			width: 600px;
+			margin: 100px auto 0;
+		}
+
+		/* Dissolve */
+		#effect {
+			position: relative;
+		}
+
+		.slideA, .slideB {
+			position: absolute;
+			width: 600px;
+			height: 400px;
+		}
+
+		.slideA { z-index: 0; }
+
+		.slideB {
+			z-index: 1;
+			opacity: 0;
+			transition: opacity 0.5s linear;
+			-webkit-transition: opacity 0.5s linear;
+		}
+
+		.slideB:hover {
+			opacity: 1;
+			transition: opacity 0.5s linear;
+			-webkit-transition: opacity 0.5s linear;
+		}
+	</style>
+</head>
+<body>
+	<div id="transitionView">
+		<div id="effect">
+			<div class="slideA"><img src="imgs/pictureA.jpg"/></div>
+			<div class="slideB"><img src="imgs/pictureB.jpg"/></div>
+		</div>
+	</div>
+</body>
+</html>

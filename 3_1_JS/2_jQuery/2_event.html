@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Sample</title>
+	<style>
+		#container {
+			width: 100px;
+			height: 100px;
+			background: #f00;
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// クリック
+			$("#container").click(function () {
+				alert("クリックされました");
+			});
+			// マウスオーバー
+			$("#container").mouseover(function () {
+				// 背景を緑に変更
+				$("#container").css("background", "#0f0");
+			});
+			// マウスアウト
+			$("#container").mouseout(function () {
+				// 背景を赤に変更
+				$("#container").css("background", "#f00");
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="container"></div>
+</body>
+</html>

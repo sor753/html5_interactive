@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample</title>
+    <script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script>
+		function init() {
+			// canvasの参照を取得します
+			var canvas = document.getElementById("myCanvas");
+
+			// Stageオブジェクトを作成。表示リストのルートになります。
+			var stage = new Stage(canvas);
+
+			// テキストを作成します
+			var t = new Text("Hello World!", "24px serif", "#000000");
+			stage.addChild(t);
+			t.x = 100;
+			t.y = 100;
+
+
+			// Stageの描画を更新
+			stage.update();
+			Ticker.addListener(stage);
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+</html>

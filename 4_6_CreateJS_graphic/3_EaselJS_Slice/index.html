@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>EaselJS Sample - Text Effect</title>
+	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script src="http://code.createjs.com/tweenjs-0.4.0.min.js"></script>
+	<script>
+	
+	var image;
+	var stage;
+	
+	function init() {
+		image = new Image();
+		image.onload = loadHandler;
+		image.src = "imgs/text.png";
+	}
+	
+	function loadHandler(){
+		var dummyCanvas = document.createElement("canvas");
+		dummyCanvas.setAttribute("width", 1);
+		dummyCanvas.setAttribute("height", image.height);
+		var context = dummyCanvas.getContext("2d");
+	
+		var srcArr = [];
+		for ( var i = 0; i < image.width; i++ ){
+			context.drawImage(image, i, 0, 1, image.height, 0, 0, 1, image.height);
+			srcArr[i] = dummyCanvas.toDataURL("image/png");
+		}
+		
+		
+		canvas = document.getElementById("canvas1");
+		stage = new Stage(canvas);
+	
+		var centerX = Math.floor( ( canvas.width - image.width ) / 2 ) ;
+		var centerY = Math.floor( ( canvas.height - image.height ) / 2 ) ;
+	
+		for ( var i = 0; i < image.width; i++ ){
+			var bmp = new Bitmap(srcArr[i]);
+			bmp.x = centerX + 1000 * Math.random() - 500;
+			bmp.y = centerY + 1000 * Math.random() - 500;
+			bmp.alpha = 0;
+			stage.addChild(bmp);
+			
+			Tween.get(bmp)
+				.wait(1.5 * i + 500)
+				.to({ alpha : 1,
+				      x : centerX + i,
+				      y : centerY}, 1500, Ease.elasticOut);	
+		}
+		
+		Ticker.setFPS(60);
+		Ticker.addListener(window);
+	}
+	
+	function tick(){
+		stage.update();
+	}
+	</script>
+</head>
+
+<body onload="init();" onclick="location.reload();" style="background:#333">
+	<canvas id="canvas1" width="960" height="540" style="background-color:#FFFFFF"></canvas>
+</body>
+</html>

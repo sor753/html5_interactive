@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>ScrollBar Sample</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script>
+
+		var targetValue = 0;
+		var currentValue = 0;
+		var $thumb;
+		var $scroller;
+		var $content;
+		var min;
+		var max;
+		var contentArea;
+
+		$(document).ready(function () {
+			$thumb = $("#thumb");
+			$content = $("#content");
+			$scroller = $("#scroller");
+			// スクロールバーの可動範囲
+			min = 0;
+			max = $("#scroller").height() - $("#thumb").height();
+			contentArea = $("#content").height() - $("#container").height();
+
+			$thumb.mousedown(mouseDownHandler);
+			setInterval(tick, 1000 / 60);
+		});
+
+		function tick() {
+			currentValue += (targetValue - currentValue) * 0.1;
+			$content.css("top", -1 * currentValue);
+		}
+
+		function mouseDownHandler(event) {
+			$(document).bind("mousemove", mouseMoveHandler);
+			$(document).bind("mouseup", mouseUpHandler);
+			// マウスカーソルが text になるのを防ぐため
+			return false;
+		}
+
+		function mouseMoveHandler(event) {
+			// つまみの座標
+			var thumbY = (event.pageY - $("#scroller").position().top) - $("#thumb").height() / 2;
+			// つまみの座標を稼動範囲に収める
+			thumbY = Math.max(min, Math.min(max, thumbY));
+			$("#thumb").css("top", thumbY); // 適用
+
+			// スクロールバーの値を反映
+			var rate = thumbY / max;
+			targetValue = contentArea * rate;
+		}
+
+		function mouseUpHandler(event) {
+			$(document).unbind("mousemove", mouseMoveHandler);
+			$(document).unbind("mouseup", mouseUpHandler);
+		}
+
+	</script>
+</head>
+
+<body>
+	<div id="container">
+		<div id="content"><img src="imgs/thumbnails.jpg"></div>
+		<div id="scroller">
+			<div id="thumb"></div>
+		</div>
+	</div>
+</body>
+</html>

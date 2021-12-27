@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>PreloadJS Sample</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/preloadjs-0.3.0.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script>
+		function init() {
+			var MAX = 40;
+
+			// 画像を表示するdivタグを作成
+			for (var i = 0; i < MAX; i++) {
+				$("#container").append('<div id="thumb_' + i + '" class="thumb"></div>');
+			}
+
+			// PreloadJSの初期化
+			var preload = new LoadQueue(false);
+
+			// 読み込みたい画像をセット (画像ファイルは連番の名前となっている)
+			var cnt = 0;
+			for (var i = 0; i < MAX; i++) {
+				var url = "examples/" + i + ".jpg";
+				preload.loadFile(url, false);
+			}
+
+			// 読み込み完了後（一枚毎にイベントが発生)
+			preload.onFileLoad = function (obj) {
+				// データを取り出す
+				var image = obj.result;
+				// 画像のリサイズ
+				image.width = 128;
+				image.height = 128;
+
+				$("#thumb_" + cnt++)
+						.append(image) // HTMLにImageオブジェクトを追加
+						.css({"background-image":"none"}); // ローディングの非表示化
+
+				// フェードインさせて表示
+				$(image).css({opacity:0}).animate({opacity:1}, 300);
+			};
+
+			preload.load();
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<div id="container"></div>
+	<br style="clear:both;">
+</body>
+</html>

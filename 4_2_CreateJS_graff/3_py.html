@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample: Graff</title>
+	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script>
+		// 都道府県の人口一覧(10位まで)
+		var data = [
+			{name:"東京都", value:13159388},
+			{name:"神奈川県", value:9048331},
+			{name:"大阪府", value:8865245},
+			{name:"愛知県", value:7410719},
+			{name:"埼玉県", value:7194556},
+			{name:"千葉県", value:6216289},
+			{name:"兵庫県", value:5588133},
+			{name:"北海道", value:5506419},
+			{name:"福岡県", value:5071968},
+			{name:"静岡県", value:3765007}
+		];
+
+		var r = 150;
+		var argInterval = 1;
+		var stage;
+
+		function init() {
+			var canvas = document.getElementById("myCanvas");
+			stage = new Stage(canvas);
+
+			// 合計を求める
+			var sum = 0;
+			for (var i = 0; i < data.length; i++) {
+				sum += data[i].value;
+			}
+
+			// グラフの描画
+			var shape = new Shape();
+			stage.addChild(shape);
+			var startAngle = 0;
+			for (var i = 0; i < data.length; i++) {
+				var itemAngle = Math.round(data[i].value / sum * 360);
+				var endAngle = itemAngle + startAngle;
+				if (i == data.length - 1) endAngle = 360;
+				drawCutCake(shape, startAngle, endAngle, Graphics.getHSL(360 * Math.random(), 80, 30));
+				drawLabel(startAngle, endAngle, data[i].name + "\n" + Math.round(data[i].value / sum * 100) + "%");
+
+				startAngle = endAngle;
+			}
+
+			shape.x = 200;
+			shape.y = 200;
+
+			stage.update();
+		}
+
+		function drawCutCake(shape, startArg, endArg, color) {
+			startArg -= 90;
+			endArg -= 90;
+
+			shape.graphics.beginFill(color);
+			shape.graphics.moveTo(0, 0);
+			while (startArg <= endArg) {
+				var px = r * Math.cos(startArg * (Math.PI / 180));
+				var py = r * Math.sin(startArg * (Math.PI / 180));
+				shape.graphics.lineTo(px, py);
+				startArg += argInterval;
+			}
+			shape.graphics.lineTo(0, 0);
+		}
+
+		function drawLabel(startArg, endArg, label) {
+			startArg -= 90;
+			endArg -= 90;
+
+			var angle = (startArg + endArg) / 2;
+
+			var text = new Text(label, "16px Sans-serif", "#000");
+			text.textAlign = "center";
+			text.textBaseline = "middle";
+			text.shadow = new Shadow("#FFF", 0, 0, 4)
+			text.x = (r + 30) * Math.cos(angle * (Math.PI / 180)) + 200;
+			text.y = (r + 30) * Math.sin(angle * (Math.PI / 180)) + 200;
+			stage.addChild(text);
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<div class="canvasHolder">
+		<canvas id="myCanvas" width="980" height="580"></canvas>
+	</div>
+</body>
+</html>

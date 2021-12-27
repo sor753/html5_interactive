@@ -1,0 +1,116 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Three.js Butterfly</title>
+	<script src="js/three.min.js"></script>
+	<script>
+
+		var image; // テクスチャ用画像
+		var STAGE_W = 720, STAGE_H = 480; // 画面サイズ
+		var camera, scene, renderer; // 3D関係
+		var butterfly, wingL, wingR; // 3Dオブジェクト
+		var countButterfly = 0, countCamera = 0; // カウンタ
+
+		function init() {
+			image = new Image();
+			image.onload = competeHandler;
+			image.src = "imgs/butterfly_wing.png";
+		}
+
+		function competeHandler() {
+			init3D();
+			initModel();
+			setInterval(tick, 1000 / 60);
+		}
+
+		function init3D(){
+			// 3D空間を作成
+			scene = new THREE.Scene();
+
+			// カメラを作成
+			camera = new THREE.PerspectiveCamera(60, STAGE_W / STAGE_H, 1, 2000);
+			camera.position.z = -1000;
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
+			scene.add(camera);
+
+			// レンダラーを作成
+			renderer = new THREE.WebGLRenderer({antialias:4});
+			renderer.setSize(STAGE_W, STAGE_H);
+
+			// エレメントを追加
+			document.getElementById('container').appendChild(renderer.domElement);
+		}
+
+		function initModel(){
+			// 地面
+			var mat = new THREE.MeshBasicMaterial({wireframe:true, color:0xe0e0e0});
+			var plane = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 10, 10), mat);
+			plane.rotation.x = 90 * (Math.PI / 180);
+			scene.add(plane);
+
+			// 蝶のコンテナーを作成
+			butterfly = new THREE.Object3D();
+
+			// 蝶
+			// 蝶の羽の素材を作成(PNGファイルを読み込み)
+			var texture = new THREE.Texture(image);
+			texture.needsUpdate = true;
+
+			var material = new THREE.MeshBasicMaterial({
+				map:texture,
+				transparent:true,
+				side : THREE.DoubleSide
+			});
+
+			// 蝶の羽を貼り付ける平面を作成
+			var wingLPlane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200, 1, 1), material);
+			var wingRPlane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200, 1, 1), material);
+
+			// 蝶の羽を作成
+			wingL = new THREE.Object3D();
+			wingR = new THREE.Object3D();
+
+			// 蝶の羽平面の座標や角度を調整
+			wingLPlane.scale.x = -1;
+			wingLPlane.position.x = -100;
+			wingRPlane.position.x = 100;
+
+			// 蝶の羽をコンテナーの表示リストに追加
+			wingL.add(wingLPlane);
+			wingR.add(wingRPlane);
+			butterfly.add(wingL);
+			butterfly.add(wingR);
+			butterfly.rotation.x = 90 * (Math.PI / 180);
+
+			// シーンに追加
+			scene.add(butterfly);
+		}
+
+		function tick(){
+			// 蝶の揺らぎを設定しています
+			butterfly.position.y = Math.sin(countButterfly) * 50 + 240;
+
+			// 蝶の
+			wingL.rotation.y = Math.sin(countButterfly) * -60 * Math.PI / 180;
+			wingR.rotation.y = Math.sin(countButterfly) * 60 * Math.PI / 180;
+
+			// カメラの動き
+			camera.position.x = 500 * Math.sin(countCamera);
+			camera.position.y = 500;
+			camera.position.z = 500 * Math.cos(countCamera);
+			camera.lookAt(new THREE.Vector3(0, 100, 0));
+
+			// レンダリング
+			renderer.render(scene, camera);
+
+			// カウンタのアップデート
+			countCamera += 1 * Math.PI / 180; // 1度ずつ加算
+			countButterfly += 4 * Math.PI / 180; // 1度ずつ加算
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="container" style="background:url(imgs/bg.png); width:720px; height:480;"></div>
+</body>
+</html>

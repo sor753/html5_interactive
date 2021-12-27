@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample</title>
+   <script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script>
+		function init() {
+			// canvasの参照を取得します
+			var canvas = document.getElementById("myCanvas");
+
+			// Stageオブジェクトを作成。表示リストのルートになります。
+			var stage = new Stage(canvas);
+
+			// 円を作成します
+			var shape = new Shape();
+			shape.graphics.beginFill("#FF0000"); // 赤色で描画するように設定
+			shape.graphics.drawCircle(0, 0, 100); //半径100pxの円を描画
+			shape.x = 200; // X座標200の位置に配置
+			shape.y = 200; // Y座標200の位置に配置
+			stage.addChild(shape); // 表示リストに追加
+
+			// Stageの描画を更新
+			stage.update();
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+</html>

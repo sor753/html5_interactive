@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample</title>
+    <script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script src="easeljs/filters/BoxBlurFilter.js"></script>
+	<script>
+
+		var stage;
+		var circles = [];
+		var mouseX = 0;
+		var mouseY = 0;
+		var count = 0;
+
+		function init() {
+			// canvasの参照を取得します
+			var canvas = document.getElementById("myCanvas");
+
+			// Stageオブジェクトを作成。表示リストのルートになります。
+			stage = new Stage(canvas);
+
+			// マウス座標の取得
+			stage.onMouseMove = onMouseMove;
+
+			// エンターフレーム
+			Ticker.setFPS(60);
+			Ticker.addListener(window);
+		}
+
+		function onMouseMove(event) {
+			// マウス座標のアップデート
+			mouseX = event.stageX;
+			mouseY = event.stageY;
+		}
+
+		function tick() {
+			createCircle(); // 円を作成
+			updateCircles(); // シェイプのアップデート
+			stage.update(); // 描画更新
+		}
+
+		function createCircle() {
+			// ぼかしフィルターを作成(ぼかしの適用量はランダム)
+			var blurVal = [2, 4, 8, 16, 32][Math.floor(Math.random() * 5)]
+			var blurFilter = new BoxBlurFilter(blurVal, blurVal, 1);
+			var margins = blurFilter.getBounds(); // フィルターの余白を取得
+
+			// 円を作成
+			var shape = new Shape();
+			var size = Math.random() * 40 + 10;
+			shape.graphics.beginFill("hsl(" + (count += 3) + ", 50%, 50%)"); // 赤色で描画するように設定
+			shape.graphics.drawCircle(0, 0, size); //半径100pxの円を描画
+
+			// 座標
+			shape.x = mouseX;
+			shape.y = mouseY;
+			// 任意の速度プロパティーを追加
+			shape.vx = Math.random() - 0.5;
+			shape.vy = -2 * Math.random();
+			// フィルター
+			shape.filters = [blurFilter];
+			shape.cache(-size + margins.x, -size + margins.y, size * 2 + margins.width, size * 2 + margins.height);
+			// ブレンドモード (設定すると見栄えがいいものの、特定のブラウザでは処理負荷が増大します)
+			shape.compositeOperation = "lighter";
+
+			// 画面に追加
+			stage.addChild(shape); // 表示リストに追加
+			circles.push(shape);
+		}
+		function updateCircles() {
+			// 配列内のシェイプすべてをアップデート
+			for (var i = 0; i < circles.length; i++) {
+				var shape = circles[i];
+				shape.x += shape.vx; // 速度の反映
+				shape.y += shape.vy;
+				shape.alpha -= 0.01; // アルファを下げる
+				// 透明になったら削除
+				if (shape.alpha <= 0) {
+					stage.removeChild(shape); // 画面から削除
+					circles.splice(i, 1); // 配列から削除
+				}
+			}
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<canvas id="myCanvas" width="980" height="580" style="background-color: #000;"></canvas>
+</body>
+</html>

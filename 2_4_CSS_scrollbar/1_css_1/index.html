@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>ScrollBar Sample</title>
+	<style>
+		/* (1)スクロールバーの大きさ */
+		::-webkit-scrollbar {
+			width: 16px;
+			height: 16px;
+		}
+		 
+		/* (2)スクロールバーの上下ボタン(外側) */
+		::-webkit-scrollbar-button:start:decrement,
+		::-webkit-scrollbar-button:end:increment {
+			display: block;
+			background-color:#F00;
+		}
+		
+		/* (3)スクロールバーの上下ボタン(内側) */
+		::-webkit-scrollbar-button:start:increment,
+		::-webkit-scrollbar-button:end:decrement {
+			display: block;
+			background-color:#0F0;
+		}
+		
+		/* (4)スクロールバーの可動領域の背景 */
+		::-webkit-scrollbar-track-piece {
+			background-color: #DDD;
+		}
+		
+		/* (5)スクロールバーのつまみ */
+		::-webkit-scrollbar-thumb {
+			background-color: #666;
+			border-radius: 10px;
+		}
+
+		/* (6)スクロールバーの垂直・水平の隙間の角 */
+		::-webkit-scrollbar-corner {
+			border: 2px solid #00f;
+		}
+		 
+		#container {
+			width: 400px;
+			height: 400px;
+			overflow-y: scroll;
+			overflow-x: scroll;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<img src="imgs/thumbnails.jpg">
+	</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample</title>
+    <script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script>
+		var image;
+		function init() {
+			image = new Image();
+			image.onload = loadHandler;
+			image.src = "imgs/sample.jpg";
+		}
+		function loadHandler(){
+			// canvasの参照を取得します
+			var canvas = document.getElementById("myCanvas");
+		
+			// Stageオブジェクトを作成。表示リストのルートになります。
+			var stage = new Stage(canvas);
+		
+			// 画像を作成します
+			var bmp = new Bitmap(image);
+			stage.addChild(bmp);
+		
+			// Stageの描画を更新
+			stage.update();
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+</html>

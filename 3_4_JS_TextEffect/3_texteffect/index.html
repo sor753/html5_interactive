@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>TextEffect Sample</title>
+	<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
+	<style>
+		#container {
+			width: 960px;
+			height: 340px;
+			padding-top: 200px;
+			background: url(imgs/bg.jpg);
+			font-family: 'Ropa Sans', cursive;
+		}
+
+		#container {
+			width: 960px;
+			height: 320px;
+			padding-top: 220px;
+			background: url(imgs/bg.jpg);
+			font-family: 'Ropa Sans', cursive;
+		}
+
+		#myText {
+			text-align: center;
+			font-size: 36px;
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="js/ShuffleText.js"></script>
+	<script>
+		$(window).bind("load", function () {
+			// 参照を取得
+			var target = document.getElementById("myText");
+
+			// インスタンスを作成
+			var sText = new ShuffleText(target);
+
+			// エフェクトを開始
+			sText.start();
+		});
+	</script>
+</head>
+
+<body>
+	<div id="container">
+		<p id="myText">The quick brown fox jumps over the lazy dog.</p>
+	</div>
+</body>
+</html>

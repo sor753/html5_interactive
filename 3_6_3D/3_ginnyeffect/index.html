@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Ginny Effect with three.js webGL</title>
+	<meta charset="utf-8">
+	<style>
+
+		#container {
+			width: 720px;
+			height: 480px;
+			background-color: #333;
+			border: 1px solid #000;
+			padding: 1px;
+			cursor: pointer;
+		}
+	</style>
+
+	<script src="js/three.min.js"></script>
+	<script>var createjs = window;</script>
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script src="http://code.createjs.com/tweenjs-0.4.0.min.js"></script>
+
+	<script>
+		var container;
+		var camera, scene, renderer;
+		var mesh;
+		var image;
+		var STAGE_W = 720, STAGE_H = 480;
+		var SEGMENT_W = 40, SEGMENT_H = 30;
+		var orijinalVertices;
+		var toggle = false;
+		var lastMaxDelay = 0;
+		var lastClickX, lastClickY;
+
+		function init() {
+			// 画像素材の読み込み
+			image = new Image();
+			image.onload = loadHandler;
+			image.src = "imgs/sample.jpg";
+		}
+
+		function loadHandler() {
+			container = document.getElementById("container");
+
+			init3D(); // 3D空間の初期化
+			initModel(); // 3Dモデルの作成
+			setInterval(tick, 1000 / 60); // フレーム処理
+
+			// マウスダウンを判定
+			container.addEventListener("mousedown", mouseDownHandler, false);
+		}
+
+		function init3D() {
+			// 3D空間を作成
+			scene = new THREE.Scene();
+
+			// カメラを作成
+			camera = new THREE.PerspectiveCamera(50, STAGE_W / STAGE_H, 1, 1000);
+			camera.position.z = 500;
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
+			scene.add(camera);
+
+			// レンダラーを作成
+			renderer = new THREE.WebGLRenderer({ antiAlias:true });
+			renderer.setSize(STAGE_W, STAGE_H);
+
+			// エレメントを追加
+			container.appendChild(renderer.domElement);
+		}
+
+		function initModel() {
+			// テクスチャの作成
+			var texture = new THREE.Texture(image);
+			texture.needsUpdate = true;
+
+			// マテリアルの作成
+			var material = new THREE.MeshBasicMaterial({map:texture});
+			//var material = new THREE.MeshBasicMaterial({wireframe:true, color:0xFF0000, wireframeLinewidth:2});
+
+			// メッシュ(平面で)の作成
+			mesh = new THREE.Mesh(
+					new THREE.PlaneGeometry(720, 480, SEGMENT_W, SEGMENT_H),
+					material
+			);
+
+			// 3D画面に追加
+			scene.add(mesh);
+
+			// メッシュの各頂点の座標を保存
+			orijinalVertices = [];
+			for (var i = 0, l = mesh.geometry.vertices.length; i < l; i++) {
+				var v = mesh.geometry.vertices[ i ];
+				orijinalVertices[i] = {
+					x:v.x,
+					y:v.y
+				};
+			}
+		}
+
+		function tick() {
+			// ジオメトリに変更がある場合は次のプロパティをtrueに設定しないと描画が更新されない
+			mesh.geometry.dynamic = true;
+			mesh.geometry.verticesNeedUpdate = true;
+
+			// レンダリング
+			renderer.render(scene, camera);
+		}
+
+
+		function mouseDownHandler(event) {
+
+			// 平面の各頂点
+			var vertices = mesh.geometry.vertices;
+
+
+			if (toggle == false) {
+				// 一点に向って伸縮する動き
+				// クリックした座標を計算
+				var clickX = event.pageX - STAGE_W / 2;
+				var clickY = event.pageY - STAGE_H / 2;
+				clickY = -1 * clickY; // 3D空間の座標とあわせるためにY座標を上下反転させておく
+
+				// マウス座標の保持
+				lastClickX = clickX;
+				lastClickY = clickY;
+				lastMaxDelay = 0;
+
+				// 一点に向って伸縮する動き
+				for (var i = 0; i < vertices.length; i++) {
+					var v = vertices[i];
+
+					// 遅延時間を計算
+					var delay = Math.sqrt((clickX - v.x) * (clickX - v.x) + (clickY - v.y) * (clickY - v.y)) / 800 * 1000;
+
+					// 頂点を目標座標へ移動
+					Tween.get(v, {override:true}).wait(delay / 6).to({x:clickX, y:clickY}, delay, createjs.Ease.cubicIn);
+
+					// 最大の遅延時間を保持
+					lastMaxDelay = Math.max(delay, lastMaxDelay);
+				}
+				toggle = true; // 次は「一点から画面全体に拡大する動き」に
+			} else {
+				// 一点から画面全体に拡大する動き
+				for (var i = 0; i < vertices.length; i++) {
+					var v = vertices[i];
+					var o = orijinalVertices[i];
+
+					// 遅延時間を計算
+					var delay = (lastMaxDelay - Math.sqrt((lastClickX - o.x) * (lastClickX - o.x) + (lastClickY - o.y) * (lastClickY - o.y))) / 800 * 1000;
+
+					// 頂点を目標座標へ移動
+					Tween.get(v, {override:true}).wait(delay / 6 + 200).to({x:o.x, y:o.y}, delay, createjs.Ease.quadOut);
+				}
+				toggle = false; // 次は「一点に向って伸縮する動き」に
+			}
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="wrap">
+		<div id="container"></div>
+	</div>
+</body>
+</html>

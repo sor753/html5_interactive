@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Audio Effect Sample</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script>
+		function handleMouseOver() {
+			var audioClick = document.getElementById("over");
+			audioClick.currentTime = 0;
+			audioClick.play();
+		}
+		function handleMouseUp() {
+			var audioClick = document.getElementById("click");
+			audioClick.currentTime = 0;
+			audioClick.play();
+		}
+	</script>
+</head>
+
+<body>
+	<div>
+		<ul>
+			<li>
+				<a class="button" onmouseover="handleMouseOver()" onmouseup="handleMouseUp()"> My Button </a>
+			</li>
+		</ul>
+	</div>
+	
+	<audio id="click">
+		<source src="sounds/btn_click.mp3">
+		<source src="sounds/btn_click.ogg">
+	</audio>
+	
+	<audio id="over">
+		<source src="sounds/btn_over.mp3">
+		<source src="sounds/btn_over.ogg">
+	</audio>
+</body>
+</html>

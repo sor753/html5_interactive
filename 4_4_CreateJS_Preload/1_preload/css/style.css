@@ -1,0 +1,19 @@
+﻿body {
+	background: #222;
+	color: #ccc;
+}
+
+h1 {
+	font-weight: normal;
+}
+
+.thumb {
+	background: url(../imgs/loading.gif) no-repeat #000;
+	background-position: 57px 57px;
+	width: 128px;
+	height: 128px;
+	padding: 1px;
+	border: 1px solid #444;
+	float: left;
+	margin: 0 3px 3px 0;
+}

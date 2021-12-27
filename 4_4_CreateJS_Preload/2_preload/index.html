@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>PreloadJS Sample</title>
+	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/preloadjs-0.3.0.min.js"></script>
+	<script>
+		function init() {
+			var preload = new LoadQueue(false);// XHRを使用するかどうかの設定。ローカルでの確認のためfalseにしている。
+			preload.loadFile("imgs/pictureA.jpg", false);
+			
+			// 全体の読み込み完了時
+			preload.onComplete = function (obj) {
+				// URLをキーにして画像やデータを取り出す
+				var imgA = preload.getResult("imgs/pictureA.jpg");				
+				// Imageオブジェクトを画面に表示
+				document.getElementById("container").appendChild(imgA);
+			};
+			
+			preload.load(); // 読み込み開始
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<div id="container"></div>
+</body>
+</html>

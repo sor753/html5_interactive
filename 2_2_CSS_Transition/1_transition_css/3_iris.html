@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>CSS3 Transitions Sample</title>
+	<style>
+		body {
+			background: #000;
+		}
+
+		#transitionView {
+			width: 600px;
+			margin: 100px auto 0;
+		}
+
+		/* Iris */
+		#effect { position: absolute; }
+
+		.slideB {
+			mask-image: url("imgs/circleMask.png");
+			mask-repeat: no-repeat;
+			mask-position: 50% 50%;
+			mask-size: 0px;
+			animation-duration: 1s;
+			transition: all 0.75s ease-in-out;
+
+			-webkit-mask-image: url("imgs/circleMask.png");
+			-webkit-mask-repeat: no-repeat;
+			-webkit-mask-position: 50% 50%;
+			-webkit-mask-size: 0px;
+			-webkit-animation-duration: 1s;
+			-webkit-transition: all 0.75s ease-in-out;
+		}
+
+		#effect:hover .slideB {
+			mask-size: 1500px;
+			-webkit-mask-size: 1500px;
+		}
+
+		.slideA, .slideB {
+			position: absolute;
+			width: 600px;
+			height: 400px;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="transitionView">
+		<div id="effect">
+			<div class="slideA"><img src="imgs/pictureA.jpg"/></div>
+			<div class="slideB"><img src="imgs/pictureB.jpg"/></div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Load Sample</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script>
+		function init() {
+			var MAX = 40;
+			for (var i = 0; i < MAX; i++) {
+				$("#container").append('<div class="thumb"><img width="128" height="128" src="examples/' + i + '.jpg?cc=' + (Math.random() * 10000 >> 0) + '" /></div>');
+			}
+		}
+	</script>
+	<style>
+			body{
+				background: #222;
+				color: #ccc;
+				font-family: 'Ropa Sans', cursive;
+			}
+			h1 {
+				font-weight: normal;
+			}
+			.thumb {
+				width: 128px;
+				height: 128px;
+				padding: 1px;
+				border: 1px solid #444;
+				float: left;
+				margin: 0 3px 3px 0;
+			}
+		</style>
+</head>
+
+<body onload="init();">
+	<div id="container">
+	</div>
+	<br style="clear:both;">
+</body>
+</html>

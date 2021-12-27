@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		function init(){
+			var cnt = 0;
+			var element = document.getElementById("myDiv");
+			setInterval(function(){
+				cnt ++;
+				element.style.left = cnt + "px";
+			}, 50);
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="myDiv"
+		 style="position:absolute;
+		 background: #f00;
+		 width:100px;
+		 height:100px" ></div>
+</body>
+</html>

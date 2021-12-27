@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		var cnt = 0;
+		var element;
+		function init() {
+			element = document.getElementById("myDiv");
+			webkitRequestAnimationFrame(tick);
+		}
+		function tick() {
+			cnt++;
+			element.style.left = cnt + "px";
+
+			webkitRequestAnimationFrame(tick);
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="myDiv"
+		 style="position:absolute;
+		 background: #f00;
+		 width:100px;
+		 height:100px"></div>
+</body>
+</html>

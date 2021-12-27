@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3 Sample</title>
+	<style>
+		#parent {
+			perspective: 2000px;
+			-webkit-perspective: 2000px;
+			-moz-perspective: 2000px;
+		}
+
+		#plane {
+			position: absolute;
+			/* Translate div */
+			transform: rotateY(45deg);
+			-webkit-transform: rotateY(45deg); /* Safari and Chrome */
+			-moz-transform: rotateY(45deg); /* Firefox */
+		}
+	</style>
+</head>
+<body>
+	<div id="parent">
+		<div id="plane"><img src="imgs/sample.jpg"></div>
+	</div>
+</body>
+</html>

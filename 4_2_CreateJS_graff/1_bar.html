@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>EaselJS Sample: Text</title>
+	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script>
+		// 都道府県の人口一覧(10位まで)
+		var data = [
+			{name:"東京都", value:13159388},
+			{name:"神奈川県", value:9048331},
+			{name:"大阪府", value:8865245},
+			{name:"愛知県", value:7410719},
+			{name:"埼玉県", value:7194556},
+			{name:"千葉県", value:6216289},
+			{name:"兵庫県", value:5588133},
+			{name:"北海道", value:5506419},
+			{name:"福岡県", value:5071968},
+			{name:"静岡県", value:3765007}
+		];
+
+		function init() {
+			var canvas = document.getElementById("myCanvas");
+			var stage = new Stage(canvas);
+
+			// 定数
+			var SEGMENT_H = 10; // 目盛りの分割数
+			var GRAFF_X = 100; // グラフの開始座標
+			var GRAFF_W = 800; // グラフ部分の横幅
+			var GRAFF_H = 580; // グラフ部分の高さ
+			var PADDING_BOTTOM = 10; // グラフ項目の下側余白
+
+			var itemW = GRAFF_W - 100; // グラフ項目の最大の横幅
+			var itemH = Math.floor(GRAFF_H / data.length) - PADDING_BOTTOM; // グラフ項目の高さ
+
+			// 最大値を求める
+			var max = 0;
+			for (var i = 0; i < data.length; i++) {
+				max = Math.max(max, data[i].value);
+			}
+
+			// グラフの描画
+			for (var i = 0; i < data.length; i++) {
+				var percent = data[i].value / max;
+				var sizeW = percent * itemW;
+
+				// 棒グラフ
+				var shape = new Shape();
+				shape.graphics
+						.beginLinearGradientFill(["#F00", "#A00"], [0, 1], 0, 0, 0, itemH)
+						.drawRect(0, 0, sizeW, itemH);
+				shape.shadow = new Shadow("#888", 2, 2, 4);
+
+				shape.x = GRAFF_X;
+				shape.y = i * (itemH + PADDING_BOTTOM);
+
+				// 項目の名前
+				var textName = new Text(data[i].name, "16px Sans-serif", "#333");
+				textName.textAlign = "right"; // 右揃えに
+				textName.textBaseline = "middle";
+				textName.x = shape.x - 5;
+				textName.y = shape.y + itemH / 2;
+
+				// 項目の値
+				var textValue = new Text(data[i].value, "16px Sans-serif", "#666");
+				textValue.textAlign = "left"; // 左揃えに
+				textValue.textBaseline = "middle";
+				textValue.x = shape.x + percent * itemW + 5;
+				textValue.y = shape.y + itemH / 2;
+
+				stage.addChild(shape, textName, textValue);
+			}
+
+			// 背景の目盛りを作成
+			var bg = new Shape();
+			bg.x = GRAFF_X;
+			bg.graphics
+					.setStrokeStyle(1)
+					.beginStroke("#DDD");
+			for (var i = 0; i <= SEGMENT_H; i++) {
+				var xPoint = i * GRAFF_W / SEGMENT_H;
+				bg.graphics
+						.moveTo(xPoint, 0)
+						.lineTo(xPoint, GRAFF_H);
+			}
+			stage.addChildAt(bg, 0);
+
+			// canvasの更新
+			stage.update();
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<div class="canvasHolder">
+		<canvas id="myCanvas" width="980" height="580"></canvas>
+	</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EaselJS Sample</title>
+    <script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
+	<script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+	<script>
+		function init() {
+			var canvas = document.getElementById("myCanvas");
+			var stage = new Stage(canvas);
+
+			// スプライトシートを作成
+			var sprites = new SpriteSheet({
+				images:["imgs/ikman.png"],
+				frames:{width:244, height:446, count:40}
+			});
+
+			// ビットマップアニメーションを作成
+			var animation = new BitmapAnimation(sprites);
+			animation.paused = false; // 停止フラグをfalseに
+			stage.addChild(animation);
+
+			Ticker.setFPS(60);
+			Ticker.addListener(stage);
+		}
+	</script>
+</head>
+
+<body onload="init();">
+	<canvas id="myCanvas" width="720" height="480"></canvas>
+</body>
+</html>

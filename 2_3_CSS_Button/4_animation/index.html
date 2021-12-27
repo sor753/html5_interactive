@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Button Effect Sample</title>
+	<style>
+		li {
+			list-style: none;
+			margin-bottom: 1px;
+			display: inline-block;
+		}
+
+		a.button, a.button:visited {
+			background: #2981e4 url(imgs/overlay.png) repeat-x;
+			display: inline-block;
+			padding: 5px 10px 6px;
+			color: #fff;
+			text-decoration: none;
+			/* 角丸 */
+			border-radius: 10px;
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			/* ドロップシャドウ */
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+			-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+			-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+			/* テキストの影 */
+			text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+			cursor: pointer;
+			width: 100px;
+			height: 30px;
+			text-align: center;
+			font-size: 13px;
+			font-weight: bold;
+			line-height: 30px;
+			text-shadow: 0 -1px 1px rgba(0, 0, 0, 1);
+			overflow: hidden;
+		}
+
+		a.button:hover { background-color: #2575cf; }
+
+		a.button span {
+			position: relative;
+			animation-duration: 0.25s;
+			animation-timing-function: ease-out;
+			animation-name: motionUp;
+			-webkit-animation-duration: 0.25s;
+			-webkit-animation-timing-function: ease-out;
+			-webkit-animation-name: motionUp;
+		}
+
+		a.button:hover span {
+			animation-duration: 0.25s;
+			animation-timing-function: ease-out;
+			animation-name: motionOver;
+			-webkit-animation-duration: 0.25s;
+			-webkit-animation-timing-function: ease-out;
+			-webkit-animation-name: motionOver;
+		}
+
+		@keyframes motionUp {
+			50% { top: -30px; }
+			50.1% { top: 30px;  }
+			100% { top: 0; }
+		}
+		@-webkit-keyframes motionUp {
+			50% { top: -30px; }
+			50.1% { top: 30px;  }
+			100% { top: 0; }
+		}
+
+		@keyframes motionOver {
+			50% { top: 30px; }
+			50.1% { top: -30px;  }
+			100% { top: 0px;  }
+		}
+		@-webkit-keyframes motionOver {
+			50% { top: 30px; }
+			50.1% { top: -30px;  }
+			100% { top: 0px;  }
+		}
+
+	</style>
+</head>
+
+<body>
+	<div>
+		<ul>
+			<li><a class="button"><span>My Button</span></a></li>
+			<li><a class="button"><span>My Button</span></a></li>
+			<li><a class="button"><span>My Button</span></a></li>
+			<li><a class="button"><span>My Button</span></a></li>
+			<li><a class="button"><span>My Button</span></a></li>
+			<li><a class="button"><span>My Button</span></a></li>
+		</ul>
+	</div>
+</body>
+</html>

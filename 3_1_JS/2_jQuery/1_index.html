@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Sample</title>
+	<style>
+		#container1, #container2  {
+			width: 100px;
+			height: 100px;
+			background: #000;
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+	<div id="container1"></div>
+	<div id="container2">テスト</div>
+	<script>
+		$("#container").css("background", "#f00");
+
+		$("#container2").css({
+		    background: "#f00",
+		    color : "#00f",
+		    width: "500px"
+		});
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>TextEffect Sample</title>
+	<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
+	<style>
+		#container {
+			width: 960px;
+			height: 340px;
+			padding-top: 200px;
+			background: url(imgs/bg.jpg);
+			font-family: 'Ropa Sans', cursive;
+		}
+
+		#myText {
+			position: relative;
+			text-align: center;
+			font-size: 48px;
+			display: none; /* エフェクト適用前に一瞬見えるのを防ぐため */
+		}
+
+		#myText span {
+			display: inline-block;
+			min-width: 10px;
+			opacity: 0;
+			-webkit-transform: scale(10);
+			transform: scale(10);
+		}
+
+		#myText span.motion {
+			opacity: 1;
+			-webkit-transform: scale(1);
+			-webkit-transition: all 0.5s;
+			transform: scale(1);
+			transition: all 0.5s;
+		}
+
+	</style>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script>
+		$(window).bind("load", function () {
+			// テキストを取得
+			var text = $("#myText").text();
+			$("#myText")
+					.empty() // 一旦、空にする
+					.show(); // 表示する
+			var arr = text.split(""); // 一文字ずつ、配列に格納
+			var elements = [];
+
+			// 一文字ずつ、spanタグで包む
+			for (var i = 0; i < arr.length; i++) {
+				elements[i] = $("<span>" + arr[i] + "</span>");
+				$("#myText").append(elements[i]); // 元の場所に挿入
+			}
+
+			// エフェクトの適用
+			for (var i = 0; i < elements.length; i++) {
+				elements[i]
+						.delay(40 * i)
+						.queue(function () {
+							$(this).addClass("motion");
+						});
+			}
+		});
+	</script>
+</head>
+<body>
+	<div id="container">
+		<p id="myText">The quick brown fox jumps over the lazy dog.</p>
+	</div>
+</body>
+</html>

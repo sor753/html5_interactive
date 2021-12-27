@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Button Effect Sample</title>
+	<style>
+
+		a.button, a.button:visited {
+			/* 背景 */
+			background-image: url(imgs/overlay.png);
+			background-repeat: repeat-x;
+			/* 角丸 */
+			border-radius: 10px;
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			/* ドロップシャドウ */
+			-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+			-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+			/* テキストの影 */
+			text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+			/* テキスト関連 */
+			font-size: 28px;
+			color: #fff;
+			text-decoration: none;
+			padding: 10px 20px;
+			/* ボタンらしく見せるための指定 */
+			cursor: pointer;
+			position: relative;
+		}
+
+		a.button:active {
+			/* マウスダウン時の挙動 */
+			top: 1px;
+			background-image: url(imgs/overlay_down.png);
+		}
+
+		/* 各種色 */
+		.pink { background-color: #e22092; }
+		.pink:hover { background-color: #c81e82; }
+
+		.green, .green:visited { background-color: #91bd09; }
+		.green:hover { background-color: #749a02; }
+
+		.red, .red:visited { background-color: #e62727; }
+		.red:hover { background-color: #cf2525; }
+
+		.orange, .orange:visited { background-color: #ff5c00; }
+		.orange:hover { background-color: #d45500; }
+
+		.blue, .blue:visited { background-color: #2981e4; }
+		.blue:hover { background-color: #2575cf; }
+
+		.yellow, .yellow:visited { background-color: #ffb515; }
+		.yellow:hover { background-color: #fc9200; }
+
+		/* その他 */
+		li { list-style: none; margin: 1em; }
+
+	</style>
+</head>
+<body>
+	<ul>
+		<li><a class="button pink">Pink Button</a></li>
+		<li><a class="button green">Green Button</a></li>
+		<li><a class="button blue">Blue Button</a></li>
+		<li><a class="button red">Red Button</a></li>
+		<li><a class="button orange">Orange Button</a></li>
+		<li><a class="button yellow">Yellow Button</a></li>
+	</ul>
+</body>
+</html>
