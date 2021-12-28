@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./js/three.min.js"></script>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+  <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
+  <script>
+    let container;
+    let camera, scene, renderer;
+    let mesh;
+    let image;
+    let STAGE_W = 720, STAGE_H = 480;
+    let SEGMENT_W = 40, SEGMENT_H = 30;
+    let orijinalVertices = [];
+    let toggle = false;
+    let lastMaxDelay = 0;
+    let lastClickX, lastClickY;
+
+    let init = () => {
+      image = new Image();
+      image.onload = loadHandler;
+      image.src = "./imgs/sample.jpg";
+    }
+
+    let init3D = () => {
+      // 3D空間を作成
+      scene = new THREE.Scene();
+
+      // カメラを作成
+      camera = new THREE.PerspectiveCamera(50, STAGE_W / STAGE_H, 1, 1000);
+      camera.position.z = 500;
+      camera.lookAt(new THREE.Vector3(0, 0, 0));
+      scene.add(camera);
+
+      // レンダラーを作成
+      renderer = new THREE.WebGLRenderer({ antiAlias: true });
+      renderer.setSize(STAGE_W, STAGE_H);
+
+      // エレメントを追加
+      container.appendChild(renderer.domElement);
+    }
+
+    let initModel = () => {
+      let texture = new THREE.Texture(image);
+      texture.needsUpdate = true;
+
+      let material = new THREE.MeshBasicMaterial({ map: texture });
+      // let material = new THREE.MeshBasicMaterial({ wireframe: true, color: 0xFF0000, wireframeLinewidth: 2 });
+
+      mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(720, 480, SEGMENT_W, SEGMENT_H),
+        material
+      );
+
+      scene.add(mesh);
+
+      for (let i = 0, l = mesh.geometry.vertices.length; i < l; i++) {
+        let v = mesh.geometry.vertices[i];
+        orijinalVertices[i] = {
+          x: v.x,
+          y: v.y
+        };
+      }
+    }
+
+    let mouseDownHandler = (event) => {
+      let vertices = mesh.geometry.vertices;
+
+      if (toggle == false) {
+        // 一点に向って伸縮する動き
+        // クリックした座標を計算
+        var clickX = event.pageX - STAGE_W / 2;
+        var clickY = event.pageY - STAGE_H / 2;
+        clickY = -1 * clickY; // 3D空間の座標とあわせるためにY座標を上下反転させておく
+
+        // マウス座標の保持
+        lastClickX = clickX;
+        lastClickY = clickY;
+        lastMaxDelay = 0;
+
+        // 一点に向って伸縮する動き
+        for (var i = 0; i < vertices.length; i++) {
+          var v = vertices[i];
+
+          // 遅延時間を計算
+          var delay = Math.sqrt((clickX - v.x) * (clickX - v.x) + (clickY - v.y) * (clickY - v.y)) / 800 * 1000;
+
+          // 頂点を目標座標へ移動
+          Tween.get(v, { override: true }).wait(delay / 6).to({ x: clickX, y: clickY }, delay, createjs.Ease.cubicIn);
+
+          // 最大の遅延時間を保持
+          lastMaxDelay = Math.max(delay, lastMaxDelay);
+        }
+        toggle = true; // 次は「一点から画面全体に拡大する動き」に
+      } else {
+        // 一点から画面全体に拡大する動き
+        for (var i = 0; i < vertices.length; i++) {
+          var v = vertices[i];
+          var o = orijinalVertices[i];
+
+          // 遅延時間を計算
+          var delay = (lastMaxDelay - Math.sqrt((lastClickX - o.x) * (lastClickX - o.x) + (lastClickY - o.y) * (lastClickY - o.y))) / 800 * 1000;
+
+          // 頂点を目標座標へ移動
+          Tween.get(v, { override: true }).wait(delay / 6 + 200).to({ x: o.x, y: o.y }, delay, createjs.Ease.quadOut);
+        }
+        toggle = false; // 次は「一点に向って伸縮する動き」に
+      }
+    }
+
+    let tick = () => {
+      mesh.geometry.dynamic = true;
+      mesh.geometry.verticesNeedUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
+    let loadHandler = () => {
+      container = document.getElementById('container');
+      console.log(container);
+
+      init3D();
+      initModel();
+      setInterval(tick, 1000 / 60);
+
+      container.addEventListener("mousedown", mouseDownHandler, false);
+    }
+  </script>
+</head>
+
+<body onload="init()">
+  <div id="wrap">
+    <div id="container"></div>
+  </div>
+</body>
+
+</html>
