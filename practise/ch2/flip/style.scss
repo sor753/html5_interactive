@@ -1,0 +1,36 @@
+#transitionView {
+  width: 600px;
+  margin: 300px auto 0;
+  perspective: 1000;
+}
+
+#effect {
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg);
+  transition: all 0.8s;
+}
+
+body {
+  :active #effect {
+    transform: rotateX(180deg);
+    transition: all 0.8s;
+  }
+}
+
+.slideA,
+.slideB {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+}
+
+.slideA {
+  transform: rotateX(0deg) translateY(-200px);
+  backface-visibility: hidden;
+}
+
+.slideB {
+  transform: rotateX(180deg) translateY(200px);
+  backface-visibility: hidden;
+}

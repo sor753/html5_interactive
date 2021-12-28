@@ -1,0 +1,22 @@
+#effect {
+  position: absolute;
+  &:hover .slideB {
+    mask-size: 1500px;
+  }
+}
+
+.slideB {
+  mask-image: url(./imgs/circleMask.png);
+  mask-repeat: no-repeat;
+  mask-position: center center;
+  mask-size: 0px;
+  animation-duration: 1s;
+  transition: all 0.75s ease-in-out;
+}
+
+.slideA,
+.slideB {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+}

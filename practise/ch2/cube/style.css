@@ -1,0 +1,35 @@
+#effect {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform: translateZ(-200px) rotateX(0deg);
+          transform: translateZ(-200px) rotateX(0deg);
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+body:active #effect {
+  -webkit-transform: translateZ(-200px) rotateX(-90deg);
+          transform: translateZ(-200px) rotateX(-90deg);
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+#effect .slideA {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  -webkit-transform: translateZ(200px);
+          transform: translateZ(200px);
+}
+
+#effect .slideB {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  -webkit-transform: translateY(-200px) rotateX(90deg);
+          transform: translateY(-200px) rotateX(90deg);
+}
+/*# sourceMappingURL=style.css.map */

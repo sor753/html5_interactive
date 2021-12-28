@@ -1,0 +1,81 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+a.button {
+  &,
+  a.button:visited {
+    position: relative;
+    background-image: url(./imgs/overlay.png);
+    background-repeat: repeat-x;
+    background-size: 100% 100%;
+    background-color: #e22092;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba($color: #000000, $alpha: 0.6);
+    border-bottom: 1px solid rgba($color: #000000, $alpha: 0.5);
+    text-shadow: 0 -1px 1px rgba($color: #000000, $alpha: 0.5);
+    font-size: 28px;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+  }
+  &:active {
+    top: 1px;
+    background-image: url(./imgs/overlay_down.png);
+  }
+}
+.pink {
+  background-color: #e22092;
+  &:hover {
+    background-color: #c81e82;
+  }
+}
+.green {
+  &,
+  &:visited {
+    background-color: green;
+  }
+  &:hover {
+    background-color: #749a02;
+  }
+}
+.red {
+  &,
+  &:visited {
+    background-color: red;
+  }
+  &:hover {
+    background-color: #cf2525;
+  }
+}
+.orange {
+  &,
+  &:visited {
+    background-color: orange;
+  }
+  &:hover {
+    background-color: #d45500;
+  }
+}
+.blue {
+  &,
+  &:visited {
+    background-color: blue;
+  }
+  &:hover {
+    background-color: #2575fc;
+  }
+}
+.yellow {
+  &,
+  &:visited {
+    background-color: yellow;
+  }
+  &:hover {
+    background-color: #fc9200;
+  }
+}

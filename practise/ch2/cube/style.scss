@@ -1,0 +1,25 @@
+#effect {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+
+  transform-style: preserve-3d;
+  transform: translateZ(-200px) rotateX(0deg);
+  transition: all 0.5s ease-in-out;
+  body:active & {
+    transform: translateZ(-200px) rotateX(-90deg);
+    transition: all 0.5s ease-in-out;
+  }
+  & .slideA {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    transform: translateZ(200px);
+  }
+  & .slideB {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    transform: translateY(-200px) rotateX(90deg);
+  }
+}

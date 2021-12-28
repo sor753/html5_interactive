@@ -1,0 +1,31 @@
+#effect {
+  position: absolute;
+}
+
+#effect:hover .slideB {
+  -webkit-mask-size: 1500px;
+          mask-size: 1500px;
+}
+
+.slideB {
+  -webkit-mask-image: url(./imgs/circleMask.png);
+          mask-image: url(./imgs/circleMask.png);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center center;
+          mask-position: center center;
+  -webkit-mask-size: 0px;
+          mask-size: 0px;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-transition: all 0.75s ease-in-out;
+  transition: all 0.75s ease-in-out;
+}
+
+.slideA,
+.slideB {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+}
+/*# sourceMappingURL=style.css.map */

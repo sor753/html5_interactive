@@ -1,0 +1,45 @@
+#transitionView {
+  width: 600px;
+  margin: 300px auto 0;
+  -webkit-perspective: 1000;
+          perspective: 1000;
+}
+
+#effect {
+  position: absolute;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform: rotateX(0deg);
+          transform: rotateX(0deg);
+  -webkit-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+body :active #effect {
+  -webkit-transform: rotateX(180deg);
+          transform: rotateX(180deg);
+  -webkit-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+.slideA,
+.slideB {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+}
+
+.slideA {
+  -webkit-transform: rotateX(0deg) translateY(-200px);
+          transform: rotateX(0deg) translateY(-200px);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+.slideB {
+  -webkit-transform: rotateX(180deg) translateY(200px);
+          transform: rotateX(180deg) translateY(200px);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+/*# sourceMappingURL=style.css.map */
