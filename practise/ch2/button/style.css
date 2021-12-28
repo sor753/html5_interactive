@@ -1,16 +1,3 @@
-body {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-}
-
 a.button,
 a.button a.button:visited {
   position: relative;
@@ -36,51 +23,163 @@ a.button:active {
   background-image: url(./imgs/overlay_down.png);
 }
 
-.pink {
+#common {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+#common .pink {
   background-color: #e22092;
 }
 
-.pink:hover {
+#common .pink:hover {
   background-color: #c81e82;
 }
 
-.green, .green:visited {
+#common .green, #common .green:visited {
   background-color: green;
 }
 
-.green:hover {
+#common .green:hover {
   background-color: #749a02;
 }
 
-.red, .red:visited {
+#common .red, #common .red:visited {
   background-color: red;
 }
 
-.red:hover {
+#common .red:hover {
   background-color: #cf2525;
 }
 
-.orange, .orange:visited {
+#common .orange, #common .orange:visited {
   background-color: orange;
 }
 
-.orange:hover {
+#common .orange:hover {
   background-color: #d45500;
 }
 
-.blue, .blue:visited {
+#common .blue, #common .blue:visited {
   background-color: blue;
 }
 
-.blue:hover {
+#common .blue:hover {
   background-color: #2575fc;
 }
 
-.yellow, .yellow:visited {
+#common .yellow, #common .yellow:visited {
   background-color: yellow;
 }
 
-.yellow:hover {
+#common .yellow:hover {
   background-color: #fc9200;
+}
+
+#animeA {
+  padding: 30px 0;
+}
+
+#animeA a.button span {
+  position: relative;
+  left: 0;
+  -webkit-transition: left 0.2s ease-out;
+  transition: left 0.2s ease-out;
+}
+
+#animeA a.button :hover {
+  left: 13px;
+  -webkit-transition: left 0.2s ease-out;
+  transition: left 0.2s ease-out;
+}
+
+#animeB {
+  padding: 30px 0;
+}
+
+#animeB a.button, #animeB a.button:hover {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 30px;
+  text-align: center;
+  width: 100px;
+  height: 30px;
+  padding: 5px 10px 6px;
+  overflow: hidden;
+}
+
+#animeB a.button span {
+  position: relative;
+  -webkit-animation-duration: 0.25s;
+          animation-duration: 0.25s;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+  -webkit-animation-name: motionUp;
+          animation-name: motionUp;
+}
+
+#animeB a.button:hover span {
+  -webkit-animation-duration: 0.25s;
+          animation-duration: 0.25s;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+  -webkit-animation-name: motionOver;
+          animation-name: motionOver;
+}
+
+@-webkit-keyframes motionUp {
+  50% {
+    top: -30px;
+  }
+  50.1% {
+    top: 30px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+@keyframes motionUp {
+  50% {
+    top: -30px;
+  }
+  50.1% {
+    top: 30px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+@-webkit-keyframes motionOver {
+  50% {
+    top: 30px;
+  }
+  50.1% {
+    top: -30px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+@keyframes motionOver {
+  50% {
+    top: 30px;
+  }
+  50.1% {
+    top: -30px;
+  }
+  100% {
+    top: 0;
+  }
 }
 /*# sourceMappingURL=style.css.map */

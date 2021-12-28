@@ -1,9 +1,3 @@
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 a.button {
   &,
   a.button:visited {
@@ -28,54 +22,131 @@ a.button {
     background-image: url(./imgs/overlay_down.png);
   }
 }
-.pink {
-  background-color: #e22092;
-  &:hover {
-    background-color: #c81e82;
+
+#common {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .pink {
+    background-color: #e22092;
+    &:hover {
+      background-color: #c81e82;
+    }
+  }
+  .green {
+    &,
+    &:visited {
+      background-color: green;
+    }
+    &:hover {
+      background-color: #749a02;
+    }
+  }
+  .red {
+    &,
+    &:visited {
+      background-color: red;
+    }
+    &:hover {
+      background-color: #cf2525;
+    }
+  }
+  .orange {
+    &,
+    &:visited {
+      background-color: orange;
+    }
+    &:hover {
+      background-color: #d45500;
+    }
+  }
+  .blue {
+    &,
+    &:visited {
+      background-color: blue;
+    }
+    &:hover {
+      background-color: #2575fc;
+    }
+  }
+  .yellow {
+    &,
+    &:visited {
+      background-color: yellow;
+    }
+    &:hover {
+      background-color: #fc9200;
+    }
   }
 }
-.green {
-  &,
-  &:visited {
-    background-color: green;
-  }
-  &:hover {
-    background-color: #749a02;
-  }
-}
-.red {
-  &,
-  &:visited {
-    background-color: red;
-  }
-  &:hover {
-    background-color: #cf2525;
-  }
-}
-.orange {
-  &,
-  &:visited {
-    background-color: orange;
-  }
-  &:hover {
-    background-color: #d45500;
+
+#animeA {
+  padding: 30px 0;
+  a {
+    &.button {
+      span {
+        position: relative;
+        left: 0;
+        transition: left 0.2s ease-out;
+      }
+      :hover {
+        left: 13px;
+        transition: left 0.2s ease-out;
+      }
+    }
   }
 }
-.blue {
-  &,
-  &:visited {
-    background-color: blue;
-  }
-  &:hover {
-    background-color: #2575fc;
+
+#animeB {
+  padding: 30px 0;
+  a {
+    &.button {
+      &,
+      &:hover {
+        display: inline-block;
+        font-size: 13px;
+        line-height: 30px;
+        text-align: center;
+        width: 100px;
+        height: 30px;
+        padding: 5px 10px 6px;
+        overflow: hidden;
+      }
+      & span {
+        position: relative;
+        animation-duration: 0.25s;
+        animation-timing-function: ease-out;
+        animation-name: motionUp;
+      }
+      &:hover span {
+        animation-duration: 0.25s;
+        animation-timing-function: ease-out;
+        animation-name: motionOver;
+      }
+    }
   }
 }
-.yellow {
-  &,
-  &:visited {
-    background-color: yellow;
+
+@keyframes motionUp {
+  50% {
+    top: -30px;
   }
-  &:hover {
-    background-color: #fc9200;
+  50.1% {
+    top: 30px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+@keyframes motionOver {
+  50% {
+    top: 30px;
+  }
+  50.1% {
+    top: -30px;
+  }
+  100% {
+    top: 0;
   }
 }

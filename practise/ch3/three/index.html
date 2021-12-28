@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../js/three.min.js"></script>
+  <script>
+    'use strict';
+    const STAGE_W = 640;
+    const STAGE_H = 480;
+
+    let scene = new THREE.Scene();
+
+    let camera = new THREE.PerspectiveCamera(40, STAGE_W / STAGE_H, 1, 1000);
+
+    camera.position.x = 500;
+    camera.position.y = 500;
+    camera.position.z = -1000;
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    let renderer = new THREE.WebGLRenderer();
+    // let renderer = new THREE.CanvasRenderer();
+    renderer.setSize(STAGE_W, STAGE_H);
+
+    // let texture = new THREE.ImageUtils.loadTexture('imgs/sample.jpg');
+    // let material = new THREE.MeshBasicMaterial({ map: texture });
+
+    // let light = new THREE.PointLight();
+    // light.position.set(0, 500, -1000);
+    // scene.add(light);
+    // let material = new THREE.MeshLambertMaterial({ color: 0xFF0000, shading: THREE.FlatShading });
+
+    let material = new THREE.MeshBasicMaterial({ color: 0xFF0000, wireframe: true });
+
+    // let geometry = new THREE.SphereGeometry(300, 16, 12);
+    let geometry = new THREE.SphereGeometry(300, 100, 60);
+    let mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    window.addEventListener('load', () => {
+      let container = document.getElementById('container');
+      console.log(container);
+      container.appendChild(renderer.domElement);
+
+      renderer.render(scene, camera);
+
+      // setInterval(() => {
+      //   mesh.rotation.x += Math.PI / 180;
+      //   mesh.rotation.y += Math.PI / 180;
+      //   renderer.render(scene, camera);
+      // }, 1000 / 60);
+    })
+  </script>
+</head>
+
+<body>
+  <div id="container"></div>
+</body>
+
+</html>
