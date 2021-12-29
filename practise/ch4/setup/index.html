@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script>
+    'use strict';
+
+    let init = () => {
+      let canvas = document.getElementById("myCanvas");
+      console.log(canvas);
+
+      let stage = new Stage(canvas);
+      console.log(stage);
+
+      let circle = new Shape();
+      circle.graphics.beginFill("#FF0000");
+      circle.graphics.drawCircle(0, 0, 100);
+      circle.x = 140;
+      circle.y = 100;
+
+      let rect = new Shape();
+      rect.graphics.beginFill("#FF0000");
+      rect.graphics.drawRect(0, 0, 100, 100);
+      rect.x = 280;
+      rect.y = 0;
+
+      let round = new Shape();
+      round.graphics.beginFill("#FF0000");
+      round.graphics.drawRoundRect(0, 0, 100, 100, 20, 20);
+      round.x = 280;
+      round.y = 120;
+
+      let star = new Shape();
+      star.graphics.beginFill("#FF0000");
+      star.graphics.drawPolyStar(0, 0, 100, 5, 0.6, -90);
+      star.x = 150;
+      star.y = 350;
+
+      let obj = new Shape();
+      obj.graphics.beginFill("#FF0000").moveTo(0, 0).lineTo(100, 0).lineTo(0, 100).lineTo(0, 0);
+      obj.x = 280;
+      obj.y = 320;
+
+      let t = new Text("Hello World!", "24px serif", "#000000");
+
+      let bitmap = new Bitmap("./imgs/sample.jpg");
+
+
+      stage.addChild(circle);
+      stage.addChild(rect);
+      stage.addChild(round);
+      stage.addChild(star);
+      stage.addChild(obj);
+      stage.addChild(t);
+      stage.addChild(bitmap);
+
+      stage.update();
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+
+</html>

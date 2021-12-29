@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script>
+    'use strict';
+
+    let img;
+    let init = () => {
+      img = new Image();
+      img.onload = handleImageLoad;
+      img.src = "./imgs/sample.jpg";
+    }
+    let handleImageLoad = () => {
+      let canvas = document.getElementById("myCanvas");
+      let stage = new Stage(canvas);
+
+      let bmp = new Bitmap(img);
+      stage.addChild(bmp);
+      stage.update();
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+
+</html>

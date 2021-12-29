@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script>
+    'use strict';
+
+    let stage;
+    let shape;
+
+    let init = () => {
+      let canvas = document.getElementById("myCanvas");
+      stage = new Stage(canvas);
+
+      shape = new Shape();
+      shape.x = 100;
+      shape.y = 100;
+      shape.graphics.beginFill("DarkRed");
+      shape.graphics.drawCircle(0, 0, 100);
+      stage.addChild(shape);
+
+      stage.enableMouseOver(10);
+
+      let handleMouseOver = (e) => {
+        shape.graphics.clear().beginFill("green").drawCircle(0, 0, 100);
+      }
+      let handleMouseOut = (e) => {
+        shape.graphics.clear().beginFill("DarkRed").drawCircle(0, 0, 100);
+      }
+      let handleClick = (e) => {
+        alert("Click!!")
+      }
+
+      shape.addEventListener("mouseover", handleMouseOver);
+      shape.addEventListener("mouseout", handleMouseOut);
+      shape.addEventListener("click", handleClick);
+
+      Ticker.addEventListener("tick", stage);
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+
+</html>
