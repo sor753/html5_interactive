@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script src="../easeljs/filters/BoxBlurFilter.js"></script>
+  <script>
+    'use strict';
+
+    let container;
+    let stage;
+
+    let init = () => {
+      let canvas = document.getElementById("myCanvas");
+      stage = new Stage(canvas);
+
+      container = new Container();
+      container.x = 300;
+      container.y = 300;
+      stage.addChild(container);
+
+      for (let i = 0; i < 10; i++) {
+        let ball = new Shape();
+        ball.graphics.beginFill("#FF0000").drawCircle(0, 0, 50);
+        ball.x = 200 * Math.sin(i * 360 / 10 * Math.PI / 180);
+        ball.y = 200 * Math.cos(i * 360 / 10 * Math.PI / 180);
+        container.addChild(ball)
+      }
+
+      Ticker.setFPS(60);
+      // Ticker.addListener(window);
+      Ticker.addEventListener("tick", tick);
+    }
+
+    let tick = () => {
+      container.rotation += 1;
+      stage.update();
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <canvas id="myCanvas" width="980" height="580"></canvas>
+</body>
+
+</html>
