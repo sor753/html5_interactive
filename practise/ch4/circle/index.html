@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <!-- <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script> -->
+  <!-- <script src="easeljs/filters/BoxBlurFilter.js"></script> -->
+  <script>
+    let stage;
+    let count = 0;
+
+    let createCircle = () => {
+      let blurVal = [2, 4, 8, 16, 32, 64][Math.round(Math.random() * 6)]
+      // let blurFilter = new BoxBlurFilter(blurVal, blurVal, 1);
+      let blurFilter = new BlurFilter(blurVal, blurVal, 1);
+      let margins = blurFilter.getBounds();
+
+      let shape = new Shape();
+      let size = Math.random() * 120;
+      let hue = 180 + 70 * Math.random();
+      shape.graphics.beginFill("hsl(" + hue + ", 30%, 50%)");
+      shape.graphics.drawCircle(0, 0, size);
+
+      shape.x = Math.random() * 980;
+      shape.y = Math.random() * 580;
+      shape.alpha = Math.random();
+
+      shape.filters = [blurFilter];
+      shape.cache(-size, -size, size * 2, size * 2);
+      shape.compositeOperation = "lighter";
+
+      stage.addChild(shape);
+    }
+
+    let init = () => {
+      let canvas = document.getElementById("myCanvas");
+      stage = new Stage(canvas);
+
+      for (let i = 0; i < 150; i++) {
+        createCircle();
+      }
+
+      stage.update();
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <canvas id="myCanvas" width="980" height="580" style="background-color: #000;"></canvas>
+</body>
+
+</html>

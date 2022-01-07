@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script>
+    let canvas;
+    let stage;
+    let circles = [];
+    let mouseX = 0;
+    let mouseY = 0;
+    let count = 0;
+
+    let createCircle = () => {
+      if (stage.mouseX > 50 && stage.mouseX < canvas.width - 50 && stage.mouseY < canvas.height - 50 && stage.mouseY > 50) {
+        let shape = new Shape();
+        let size = 30;
+        let colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
+        let colorSelector = Math.round(Math.random() * 6);
+        let color = colors[colorSelector];
+        console.log(color);
+        shape.graphics.beginFill(color);
+        shape.graphics.drawCircle(0, 0, size);
+
+        mouseX = stage.mouseX;
+        mouseY = stage.mouseY;
+        shape.x = mouseX;
+        shape.y = mouseY;
+
+        let angle = Math.round(Math.random() * 7) * 45;
+        console.log(angle);
+        let radians = angle * Math.PI / 180;
+        console.log(radians);
+        let speed = 5;
+        shape.vx = Math.cos(radians) * speed;
+        shape.vy = Math.sin(radians) * speed;
+
+        if (circles.length < 7) {
+          stage.addChild(shape);
+          circles.push(shape);
+        }
+      }
+    }
+
+    let updateCircles = () => {
+      for (let i = 0; i < circles.length; i++) {
+        let shape = circles[i];
+        shape.x += shape.vx;
+        shape.y += shape.vy;
+        shape.alpha -= 0.02;
+        if (shape.alpha <= 0) {
+          stage.removeChild(shape);
+          circles.splice(i, 1);
+        }
+      }
+    }
+
+    let tickStart = () => {
+      updateCircles();
+      stage.update();
+    }
+
+
+    let init = () => {
+      canvas = document.getElementById("myCanvas");
+      stage = new Stage(canvas);
+
+      console.log(canvas.width);
+      console.log(canvas.height);
+
+      canvas.addEventListener('mouseover', () => {
+        canvas.addEventListener('mousemove', () => {
+          createCircle();
+          stage.update();
+        }, false);
+        Ticker.timingMode = Ticker.RAF;
+        Ticker.addEventListener("tick", tickStart);
+      })
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <canvas id="myCanvas" width="980" height="580" style="background-color: #fff;"></canvas>
+</body>
+
+</html>
