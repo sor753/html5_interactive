@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <!-- <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script> -->
+  <script>
+    const NUM_PARTICLE = 1000;
+    let arrowImage;
+    let forceMapImage;
+    let forceMapCanvas;
+    let forceMapIndexA = 0;
+    let forceMapIndexB = 1;
+    let stage;
+    let particleList = [];
+
+    class Arrow extends Bitmap {
+      constructor(imageOrUri, x, y) {
+        super();
+        this.x = x;
+        this.y = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.ax = 0;
+        this.ay = 0;
+        this.initialize(imageOrUri);
+        this.regX = 10;
+        this.regY = 10;
+      }
+      step(colorA, colorB) {
+        this.ax += (colorA - 128) * .0005;
+        this.ay += (colorB - 128) * .0005;
+        this.vx += this.ax;
+        this.vy += this.ay;
+        this.x += this.vx;
+        this.y += this.vy;
+
+        this.rotation = Math.atan2(this.vy, this.vx) * 180 / Math.PI;
+
+        this.ax *= .96;
+        this.ay *= .96;
+        this.vx *= .92;
+        this.vy *= .92;
+
+        (this.x > 960) ? this.x = 0 : (this.x < 0) ? this.x = 960 : 0;
+        (this.y > 540) ? this.y = 0 : (this.y < 0) ? this.y = 540 : 0;
+      }
+    };
+
+    let handleTick = () => {
+      for (let i = 0; i < particleList.length; i++) {
+        let arrow = particleList[i];
+        let data = forceMapCanvas.getImageData(arrow.x >> 1, arrow.y >> 1, 1, 1);
+        arrow.step(data.data[forceMapIndexA], data.data[forceMapIndexB]);
+      }
+      stage.update();
+    }
+
+    let resetForceMapIndex = () => {
+      let indexArr = [0, 1, 2];
+      forceMapIndexA = indexArr[indexArr.length * Math.random() >> 0];
+      forceMapIndexB = indexArr[indexArr.length * Math.random() >> 0];
+    }
+
+    let initParticles = () => {
+      let canvas = document.getElementById("myCanvas");
+      stage = new Stage(canvas);
+
+      for (i = 0; i < NUM_PARTICLE; i++) {
+        let arrow = new Arrow(arrowImage, Math.random() * 960 >> 0, Math.random() * 540 >> 0);
+        stage.addChild(arrow);
+        particleList[i] = arrow;
+      }
+
+      Ticker.timingMode = Ticker.RAF;
+      Ticker.addEventListener("tick", handleTick);
+      setInterval(resetForceMapIndex, 1000);
+    }
+
+    let initForceMap = () => {
+      let forceMapElement = document.createElement("canvas");
+      forceMapElement.setAttribute("width", forceMapImage.width);
+      forceMapElement.setAttribute("height", forceMapImage.height);
+
+      forceMapCanvas = forceMapElement.getContext("2d");
+      forceMapCanvas.drawImage(forceMapImage, 0, 0);
+
+      arrowImage = new Image();
+      arrowImage.onload = initParticles;
+      arrowImage.src = "imgs/arrow.png";
+    }
+
+    let init = () => {
+      forceMapImage = new Image();
+      forceMapImage.onload = initForceMap;
+      forceMapImage.src = "imgs/forcemap.png";
+    }
+  </script>
+</head>
+
+<body onload="init();" style="background-color:#EEEEEE">
+  <canvas id="myCanvas" width="960" height="540" style="background-color: #fff;"></canvas>
+</body>
+
+</html>

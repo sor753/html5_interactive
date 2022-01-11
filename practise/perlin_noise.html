@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./perlin.js"></script>
+  <style>
+    body {
+      margin: 0;
+      height: 0;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* 背景グラデーションの作成 */
+      background: linear-gradient(to bottom,
+          hsl(180, 80%, 40%),
+          hsl(240, 80%, 60%),
+          hsl(300, 80%, 40%));
+      background-size: 400% 400%;
+      animation: AnimationName 10s ease infinite;
+    }
+
+    @keyframes AnimationName {
+      0% {
+        background-position: 50% 0%
+      }
+
+      50% {
+        background-position: 50% 100%
+      }
+
+      100% {
+        background-position: 50% 0%
+      }
+    }
+
+    canvas {
+      width: 100vw;
+      height: 100vh;
+      background: black;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <div id="bg"></div> -->
+  <canvas id="myCanvas" width="980" height="580"></canvas>
+  <script>
+    'use strict';
+
+    let stageW = 0;
+    let stageH = 0;
+
+    let resize = () => {
+      stageW = innerWidth * devicePixelRatio;
+      stageH = innerHeight * devicePixelRatio;
+
+      canvas.width = stageW;
+      canvas.height = stageH;
+    }
+
+    let draw = () => {
+      context.clearRect(0, 0, stageW, stageH);
+      context.lineWidth = 1;
+
+      let lineNum = 2;
+      let segmentNum = 150;
+      let amplitude = stageH / 3;
+      let time = Date.now() / 3000;
+
+      for (let j = 0; j < lineNum; j++) {
+        context.beginPath();
+        let h = Math.round((j / lineNum) * 360);
+        let s = 100;
+        let l = Math.round((j / lineNum) * 100);
+
+        // context.strokeStyle = `hsl(${h},${s}%, ${l}%)`;
+        context.strokeStyle = `hsl(${h}, ${s}%, ${l}%)`;
+
+        for (let i = 0; i < segmentNum; i++) {
+          let x = i / (segmentNum - 1) * stageW;
+
+          let px = i / (50 + j);
+          let py = j / 50 + time;
+
+          let y = amplitude * noise.perlin2(px, py) + stageH / 2;
+
+          context.lineTo(x, y);
+        };
+        context.stroke();
+      };
+
+      // for (let i = 0; i < segmentNum; i++) {
+      //   let x = i / (segmentNum - 1) * stageW;
+      //   // let radianOrigin = i / segmentNum * Math.PI;
+      //   // let radian = (radianOrigin + time) % 180;
+      //   // let radian = i / segmentNum * Math.PI + time;
+
+      //   let px = i / 50;
+      //   let py = time;
+
+      //   let y = amplitude * noise.perlin2(px, py) + stageH / 2;
+
+      //   if (i === 0) {
+      //     context.moveTo(x, y);
+      //   } else {
+      //     context.lineTo(x, y);
+      //   }
+      // };
+      // context.stroke();
+    }
+
+    let tick = () => {
+      requestAnimationFrame(tick);
+      draw();
+    }
+
+    const canvas = document.getElementById("myCanvas");
+    const context = canvas.getContext("2d");
+    resize();
+    tick();
+    window.addEventListener('resize', resize);
+  </script>
+</body>
+
+</html>

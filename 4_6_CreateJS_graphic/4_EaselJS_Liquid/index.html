@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
 	<title>EaselJS Sample - ForceMap Arrows</title>
 	<script>var createjs = window;</script> <!-- 名前空間をグローバルに変更 -->
@@ -32,6 +33,7 @@
 			arrowImage = new Image();
 			arrowImage.onload = initParticles;
 			arrowImage.src = "imgs/arrow.png";
+			console.log(arrowImage);
 		}
 
 		function initParticles() {
@@ -40,6 +42,7 @@
 
 			for (i = 0; i < NUM_PARTICLE; i++) {
 				var arrow = new Arrow(arrowImage, Math.random() * 960 >> 0, Math.random() * 540 >> 0);
+				console.log(arrow.initialize);
 				stage.addChild(arrow);
 				particleList[i] = arrow;
 			}
@@ -65,41 +68,74 @@
 		}
 
 
-		(function (window) {
-			function Arrow(imageOrUri, x, y) {
-				this.x = x;
-				this.y = y;
-				this.vx = 0;
-				this.vy = 0;
-				this.ax = 0;
-				this.ay = 0;
-				this.initialize(imageOrUri);
-				this.regX = 10;
-				this.regY = 10;
-			}
+		// (function (window) {
+		// 	function Arrow(imageOrUri, x, y) {
+		// 		this.x = x;
+		// 		this.y = y;
+		// 		this.vx = 0;
+		// 		this.vy = 0;
+		// 		this.ax = 0;
+		// 		this.ay = 0;
+		// 		this.initialize(imageOrUri);
+		// 		this.regX = 10;
+		// 		this.regY = 10;
+		// 	}
 
-			var p = Arrow.prototype = new Bitmap();
+		// 	var p = Arrow.prototype = new Bitmap();
 
-			p.step = function (colorA, colorB) {
-				this.ax += ( colorA - 128 ) * .0005;
-				this.ay += ( colorB - 128 ) * .0005;
-				this.vx += this.ax;
-				this.vy += this.ay;
-				this.x += this.vx;
-				this.y += this.vy;
+		// 	p.step = function (colorA, colorB) {
+		// 		this.ax += (colorA - 128) * .0005;
+		// 		this.ay += (colorB - 128) * .0005;
+		// 		this.vx += this.ax;
+		// 		this.vy += this.ay;
+		// 		this.x += this.vx;
+		// 		this.y += this.vy;
 
-				this.rotation = Math.atan2(this.vy, this.vx) * 180 / Math.PI;
+		// 		this.rotation = Math.atan2(this.vy, this.vx) * 180 / Math.PI;
 
-				this.ax *= .96;
-				this.ay *= .96;
-				this.vx *= .92;
-				this.vy *= .92;
+		// 		this.ax *= .96;
+		// 		this.ay *= .96;
+		// 		this.vx *= .92;
+		// 		this.vy *= .92;
 
-				( this.x > 960 ) ? this.x = 0 : ( this.x < 0 ) ? this.x = 960 : 0;
-				( this.y > 540 ) ? this.y = 0 : ( this.y < 0 ) ? this.y = 540 : 0;
-			};
-			window.Arrow = Arrow;
-		}(window));
+		// 		(this.x > 960) ? this.x = 0 : (this.x < 0) ? this.x = 960 : 0;
+		// 		(this.y > 540) ? this.y = 0 : (this.y < 0) ? this.y = 540 : 0;
+		// 	};
+		// 	window.Arrow = Arrow;
+		// }(window));
+		function Arrow(imageOrUri, x, y) {
+			this.x = x;
+			this.y = y;
+			this.vx = 0;
+			this.vy = 0;
+			this.ax = 0;
+			this.ay = 0;
+			this.initialize(imageOrUri);
+			this.regX = 10;
+			this.regY = 10;
+		}
+
+		var p = Arrow.prototype = new Bitmap();
+
+		p.step = function (colorA, colorB) {
+			this.ax += (colorA - 128) * .0005;
+			this.ay += (colorB - 128) * .0005;
+			this.vx += this.ax;
+			this.vy += this.ay;
+			this.x += this.vx;
+			this.y += this.vy;
+
+			this.rotation = Math.atan2(this.vy, this.vx) * 180 / Math.PI;
+
+			this.ax *= .96;
+			this.ay *= .96;
+			this.vx *= .92;
+			this.vy *= .92;
+
+			(this.x > 960) ? this.x = 0 : (this.x < 0) ? this.x = 960 : 0;
+			(this.y > 540) ? this.y = 0 : (this.y < 0) ? this.y = 540 : 0;
+		};
+		window.Arrow = Arrow;
 
 	</script>
 </head>
@@ -107,4 +143,5 @@
 <body onload="init();" style="background-color:#EEEEEE">
 	<canvas id="myCanvas" width="960" height="540" style="background-color:#FFFFFF"></canvas>
 </body>
+
 </html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script src="./perlin.js"></script>
+  <style>
+    body {
+      margin: 0;
+      height: 0;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* 背景グラデーションの作成 */
+      /* background: linear-gradient(to bottom,
+          hsl(180, 80%, 40%),
+          hsl(240, 80%, 60%),
+          hsl(300, 80%, 40%)); */
+      background: url(./img/wickedbackground.svg);
+      background-size: 400% 400%;
+      background-position: center;
+      /* animation: AnimationName 10s ease infinite; */
+    }
+
+    @keyframes AnimationName {
+      0% {
+        background-position: 50% 0%
+      }
+
+      50% {
+        background-position: 50% 100%
+      }
+
+      100% {
+        background-position: 50% 0%
+      }
+    }
+
+    #myCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #000;
+      width: 100%;
+      height: 100%;
+      /* mix-blend-mode: hard-light; */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="bg"></div>
+  <canvas id="myCanvas" width="980" height="580"></canvas>
+  <script>
+    'use strict';
+    let stage;
+    let canvas;
+    let context;
+    let stageW = 0;
+    let stageH = 0;
+
+    let draw = (wave) => {
+      let waveWidth = 50;
+      wave.graphics.clear();
+      // wave.graphics.beginStroke("White");
+      wave.graphics.setStrokeStyle(waveWidth);
+
+      let lineNum = 15;
+      let segmentNum = 30;
+      // let amplitude = stageH / 3;
+      let time = Date.now() / 5000;
+
+      for (let j = 0; j < lineNum; j++) {
+        let colors = ["#47a9ed", "#f8ee1c", "#ff2600", "#ef9136", "#82cc34"];
+
+        wave.graphics.beginStroke(colors[j % 5]);
+        // wave.graphics.beginStroke("black");
+        for (let i = 0; i < segmentNum; i++) {
+          let x = i / (segmentNum - 1) * (stageW + waveWidth * 2);
+          // let x = i / (segmentNum - 1) * stageW;
+
+          let px = i / (40 + j);
+          let py = j / 7 + time;
+
+          // let amplitude = stageH / (segmentNum - i) * (i * (50 / segmentNum)) + 40;
+          let amplitude = stageH / 1.75;
+          let y = (amplitude * noise.perlin2(px, py) + stageH / 2) + ((stageH / 2) - (i * ((stageH / 2) / segmentNum)) ** 1.1);
+          // let y = amplitude * noise.perlin2(px, py) + stageH / 2;
+
+          wave.alpha = 0.8;
+
+          if (i === 0) {
+            wave.graphics.moveTo(x - waveWidth, y);
+            // wave.graphics.moveTo(x, y);
+          } else {
+            wave.graphics.lineTo(x - (waveWidth - (i / (segmentNum - 1) * stageW)), y);
+            // wave.graphics.lineTo(x, y);
+          }
+        }
+        stage.addChild(wave);
+        stage.update();
+      }
+      stage.removeChild(wave);
+    }
+
+    let tickStart = () => {
+      let wave = new createjs.Shape();
+      draw(wave);
+      context.fillStyle = "rgba(255, 255, 255, 0.5)";
+      context.fillRect(0, 0, stageW, stageH);
+
+      stage.update();
+    }
+
+    let handleResize = () => {
+      stageW = innerWidth * devicePixelRatio;
+      stageH = innerHeight * devicePixelRatio;
+
+      canvas.width = stageW;
+      canvas.height = stageH;
+    }
+
+    let init = () => {
+      canvas = document.getElementById("myCanvas");
+      stage = new createjs.Stage("myCanvas");
+      context = stage.canvas.getContext("2d");
+      stage.autoClear = false;
+      window.addEventListener('resize', handleResize);
+      handleResize();
+
+      createjs.Ticker.timingMode = createjs.Ticker.RAF;
+      createjs.Ticker.addEventListener("tick", tickStart);
+    }
+
+    window.addEventListener("load", init);
+  </script>
+</body>
+
+</html>

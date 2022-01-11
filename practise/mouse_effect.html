@@ -8,7 +8,38 @@
   <title>Document</title>
   <script>let createjs = window;</script>
   <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
   <script>
+    let touch_event = window.ontouchstart;
+    let touch_points = navigator.maxTouchPoints;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      let touch = document.getElementById('touch');
+      touch.textContent = touch_event ? touch_event : 'null';
+      let point = document.getElementById('point');
+      point.textContent = touch_points;
+      let scroll = document.getElementById("scroll");
+      let device = document.getElementById('device');
+      if (touch_event !== undefined && 0 < touch_points) {
+        device.textContent = 'タッチ対応端末です';
+      } else {
+        device.textContent = 'タッチ非対応端末です';
+        // scroll.classList.add('none');
+      }
+      let targetCanvas = document.getElementById('myCanvas');
+      let scrollTarget = document.getElementById('smooth');
+      let canvasFadeOut = () => {
+        scrollTarget.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      };
+      scroll.addEventListener('click', () => {
+        canvasFadeOut();
+        console.log('click');
+      }, false);
+    })
+
     let canvas;
     let stage;
     let circles = [];
@@ -19,11 +50,10 @@
     let createCircle = () => {
       if (stage.mouseX > 50 && stage.mouseX < canvas.width - 50 && stage.mouseY < canvas.height - 50 && stage.mouseY > 50) {
         let shape = new Shape();
-        let size = 30;
+        let size = Math.random() * 40 + 10;
         let colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
         let colorSelector = Math.round(Math.random() * 6);
         let color = colors[colorSelector];
-        console.log(color);
         shape.graphics.beginFill(color);
         shape.graphics.drawCircle(0, 0, size);
 
@@ -33,18 +63,42 @@
         shape.y = mouseY;
 
         let angle = Math.round(Math.random() * 7) * 45;
-        console.log(angle);
         let radians = angle * Math.PI / 180;
-        console.log(radians);
-        let speed = 5;
+        let speed = Math.random() * 5 + 3;
         shape.vx = Math.cos(radians) * speed;
         shape.vy = Math.sin(radians) * speed;
 
-        if (circles.length < 7) {
+        if (circles.length < 15) {
           stage.addChild(shape);
           circles.push(shape);
         }
       }
+    }
+
+    let createCircleTouch = () => {
+      for (let i = 0; i < 7; i++) {
+        let shape = new Shape();
+        let size = Math.random() * 40 + 10;
+        let colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
+        let color = colors[i];
+        shape.graphics.beginFill(color);
+        shape.graphics.drawCircle(0, 0, size);
+
+        mouseX = stage.mouseX;
+        mouseY = stage.mouseY;
+        shape.x = mouseX;
+        shape.y = mouseY;
+
+        let angle = Math.round(Math.random() * 7) * 45;
+        let radians = angle * Math.PI / 180;
+        let speed = Math.random() * 5 + 1;
+        shape.vx = Math.cos(radians) * speed;
+        shape.vy = Math.sin(radians) * speed;
+
+        stage.addChild(shape);
+        circles.push(shape);
+      }
+
     }
 
     let updateCircles = () => {
@@ -52,7 +106,7 @@
         let shape = circles[i];
         shape.x += shape.vx;
         shape.y += shape.vy;
-        shape.alpha -= 0.02;
+        shape.alpha -= 0.03;
         if (shape.alpha <= 0) {
           stage.removeChild(shape);
           circles.splice(i, 1);
@@ -65,28 +119,83 @@
       stage.update();
     }
 
+    let handleResize = () => {
+      let w = window.innerWidth;
+      let h = window.innerHeight;
+      stage.canvas.width = w;
+      stage.canvas.height = h;
+      stage.update();
+    }
 
     let init = () => {
       canvas = document.getElementById("myCanvas");
       stage = new Stage(canvas);
-
-      console.log(canvas.width);
-      console.log(canvas.height);
-
-      canvas.addEventListener('mouseover', () => {
+      window.addEventListener('resize', handleResize);
+      handleResize();
+      if (Touch.isSupported() == true) {
+        Touch.enable(stage);
+        canvas.addEventListener('touchstart', () => {
+          createCircleTouch();
+          stage.update();
+        }, false);
+        canvas.addEventListener('touchmove', () => {
+          createCircle();
+          stage.update();
+        }, false);
+      } else {
         canvas.addEventListener('mousemove', () => {
           createCircle();
           stage.update();
         }, false);
-        Ticker.timingMode = Ticker.RAF;
-        Ticker.addEventListener("tick", tickStart);
-      })
+      }
+
+      Ticker.timingMode = Ticker.RAF;
+      Ticker.addEventListener("tick", tickStart);
     }
   </script>
+  <style>
+    canvas#myCanvas {
+      display: block;
+      position: absolute;
+      background-color: #fefefe;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      transition: all 1s;
+    }
+
+    div#scroll {
+      width: 80px;
+      height: 80px;
+      border-radius: 40px;
+      background-color: red;
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .none {
+      display: none;
+    }
+
+    canvas#myCanvas.fade-out {
+      top: -100%;
+    }
+  </style>
 </head>
 
 <body onload="init();">
-  <canvas id="myCanvas" width="980" height="580" style="background-color: #fff;"></canvas>
+  <canvas id="myCanvas"></canvas>
+  <div id="scroll"></div>
+  <div id="touch"></div>
+  <div id="point"></div>
+  <div id="device"></div>
+  <div style="width: 100%;height: 100vh;background-color: #ccc;"></div>
+  <div id="smooth" style="width: 100%;height: 1000px;background-color: #333;"></div>
 </body>
 
 </html>

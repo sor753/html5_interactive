@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>let createjs = window;</script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script>
+    let image;
+    let stage;
+
+    let tick = () => {
+      stage.update();
+    }
+
+    let loadHandler = () => {
+      let dummyCanvas = document.createElement("canvas");
+      dummyCanvas.setAttribute("width", 1);
+      dummyCanvas.setAttribute("height", image.height);
+      let context = dummyCanvas.getContext("2d");
+
+      let srcArr = [];
+      for (let i = 0; i < image.width; i++) {
+        context.drawImage(image, i, 0, 1, image.height, 0, 0, 1, image.height);
+        srcArr[i] = dummyCanvas.toDataURL("image/png");
+      }
+
+      let canvas = document.getElementById("myCanvas");
+      stage = new Stage(canvas);
+
+      let centerX = Math.floor((canvas.width - image.width) / 2);
+      let centerY = Math.floor((canvas.height - image.height) / 2);
+
+      for (let i = 0; i < image.width; i++) {
+        let bmp = new Bitmap(srcArr[i]);
+        bmp.x = centerX + 1000 * Math.random() - 500;
+        bmp.y = centerY + 1000 * Math.random() - 500;
+        bmp.alpha = 0;
+        stage.addChild(bmp);
+
+        Tween.get(bmp)
+          .wait(1.5 * i + 500)
+          .to({ alpha: 1, x: centerX + i, y: centerY }, 1500, Ease.elasticOut);
+      }
+
+      Ticker.timingMode = createjs.Ticker.RAF;
+      Ticker.addEventListener("tick", tick);
+    }
+
+    let init = () => {
+      image = new Image();
+      image.onload = loadHandler;
+      image.src = "imgs/text.png";
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <canvas id="myCanvas" width="960" height="540" style="background-color: #fff;"></canvas>
+</body>
+
+</html>
