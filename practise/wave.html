@@ -71,15 +71,15 @@
     let stageH = 0;
 
     let draw = (wave) => {
-      let waveWidth = 50;
+      let waveWidth = 1;
       wave.graphics.clear();
       // wave.graphics.beginStroke("White");
       wave.graphics.setStrokeStyle(waveWidth);
 
-      let lineNum = 15;
-      let segmentNum = 30;
+      let lineNum = 10;
+      let segmentNum = 100;
       // let amplitude = stageH / 3;
-      let time = Date.now() / 5000;
+      let time = Date.now() / 4000;
 
       for (let j = 0; j < lineNum; j++) {
         let colors = ["#47a9ed", "#f8ee1c", "#ff2600", "#ef9136", "#82cc34"];
@@ -87,25 +87,25 @@
         wave.graphics.beginStroke(colors[j % 5]);
         // wave.graphics.beginStroke("black");
         for (let i = 0; i < segmentNum; i++) {
-          let x = i / (segmentNum - 1) * (stageW + waveWidth * 2);
-          // let x = i / (segmentNum - 1) * stageW;
+          // let x = i / (segmentNum - 1) * (stageW + waveWidth * 2);
+          let x = i / (segmentNum - 1) * stageW;
 
           let px = i / (40 + j);
-          let py = j / 7 + time;
+          let py = j / 40 + time;
 
           // let amplitude = stageH / (segmentNum - i) * (i * (50 / segmentNum)) + 40;
-          let amplitude = stageH / 1.75;
-          let y = (amplitude * noise.perlin2(px, py) + stageH / 2) + ((stageH / 2) - (i * ((stageH / 2) / segmentNum)) ** 1.1);
-          // let y = amplitude * noise.perlin2(px, py) + stageH / 2;
+          let amplitude = stageH * ((segmentNum / (((j / lineNum) * .5 + 2.5)) - i) * .02);
+          // let y = (amplitude * noise.perlin2(px, py) + stageH / 2) + ((stageH / 2) - (i * ((stageH / 2) / segmentNum)) ** 1.1);
+          let y = amplitude * noise.perlin2(px, py) + stageH / 1.2 + (-((i - segmentNum / 3) ** 2)) / 4;
 
-          wave.alpha = 0.8;
+          wave.alpha = 0.3;
 
           if (i === 0) {
-            wave.graphics.moveTo(x - waveWidth, y);
-            // wave.graphics.moveTo(x, y);
+            // wave.graphics.moveTo(x - waveWidth, y);
+            wave.graphics.moveTo(x, y);
           } else {
-            wave.graphics.lineTo(x - (waveWidth - (i / (segmentNum - 1) * stageW)), y);
-            // wave.graphics.lineTo(x, y);
+            // wave.graphics.lineTo(x - (waveWidth - (i / (segmentNum - 1) * stageW)), y);
+            wave.graphics.lineTo(x, y);
           }
         }
         stage.addChild(wave);
@@ -117,7 +117,7 @@
     let tickStart = () => {
       let wave = new createjs.Shape();
       draw(wave);
-      context.fillStyle = "rgba(255, 255, 255, 0.5)";
+      context.fillStyle = "rgba(255, 255, 255, 0.1)";
       context.fillRect(0, 0, stageW, stageH);
 
       stage.update();
